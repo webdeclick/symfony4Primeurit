@@ -46,6 +46,12 @@ class Articles
      */
     private $featured_image;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $users;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +125,18 @@ class Articles
     public function setFeaturedImage(string $featured_image): self
     {
         $this->featured_image = $featured_image;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?Users $users): self
+    {
+        $this->users = $users;
 
         return $this;
     }
