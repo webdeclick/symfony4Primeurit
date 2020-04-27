@@ -59,9 +59,21 @@ class Articles
      */
     private $commentaires;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\MotsCles", inversedBy="articles")
+     */
+    private $mots_cles;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Categories", inversedBy="articles")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->mots_cles = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +191,58 @@ class Articles
             if ($commentaire->getArticles() === $this) {
                 $commentaire->setArticles(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MotsCles[]
+     */
+    public function getMotsCles(): Collection
+    {
+        return $this->mots_cles;
+    }
+
+    public function addMotsCle(MotsCles $motsCle): self
+    {
+        if (!$this->mots_cles->contains($motsCle)) {
+            $this->mots_cles[] = $motsCle;
+        }
+
+        return $this;
+    }
+
+    public function removeMotsCle(MotsCles $motsCle): self
+    {
+        if ($this->mots_cles->contains($motsCle)) {
+            $this->mots_cles->removeElement($motsCle);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Categories[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categories $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
 
         return $this;
