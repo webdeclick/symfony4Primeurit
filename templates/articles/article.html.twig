@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des articles{% endblock %}
+{% block title %}{{ article.titre}}{% endblock %}
 
 {% block body %}
-
-{% for article in articles %}
-    <h2><a href="{{ path('article', {"slug": article.slug}) }}">{{ article.titre}}</a></h2>
+    <h1>{{ article.titre}}</h1>
     <img src="{{ vich_uploader_asset(article, 'imageFile')  }}" alt="">
     <p>Publié le {{article.createdAt|date('d/m/Y à h\\hi')}}</p>
     <p>
@@ -14,6 +12,11 @@
         {% endfor %}    
     </p>
     {{ article.contenu | raw }}
-{% endfor %}
-
+    <h2>Commentaire</h2>
+    {% for commentaire in article.commentaires %}
+      <p>Publié par {{ commentaire.pseudo }}</p>
+      <div>{{ commentaire.contenu }}</div>
+    {% else %}
+      <p>Il n'y pas encore de commentaires.</p>
+    {% endfor %}
 {% endblock %}
