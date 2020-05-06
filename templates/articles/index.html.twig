@@ -3,17 +3,21 @@
 {% block title %}Liste des articles{% endblock %}
 
 {% block body %}
-
-{% for article in articles %}
-    <h2><a href="{{ path('article', {"slug": article.slug}) }}">{{ article.titre}}</a></h2>
-    <img src="{{ vich_uploader_asset(article, 'imageFile')  }}" alt="">
-    <p>Publié le {{article.createdAt|date('d/m/Y à h\\hi')}}</p>
-    <p>
-        {% for categorie in article.categories %}
-            {{ categorie.nom }}
-        {% endfor %}    
-    </p>
-    {{ article.contenu | raw }}
-{% endfor %}
+    {% for message in app.flashes('message') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for article in articles %}
+        <h2><a href="{{ path('article', {"slug": article.slug}) }}">{{ article.titre}}</a></h2>
+        <img src="{{ vich_uploader_asset(article, 'imageFile')  }}" alt="">
+        <p>Publié le {{article.createdAt|date('d/m/Y à h\\hi')}}</p>
+        <p>
+            {% for categorie in article.categories %}
+                {{ categorie.nom }}
+            {% endfor %}    
+        </p>
+        {{ article.contenu | raw }}
+    {% endfor %}
 
 {% endblock %}

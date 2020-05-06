@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Articles;
 use App\Entity\Commentaires;
 use App\Form\CommentaireFormType;
+use App\Form\AjoutArticleFormType;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use Symfony\Component\Routing\Annotation\Route;
 
 class ArticlesController extends AbstractController
 {
@@ -20,6 +22,29 @@ class ArticlesController extends AbstractController
         return $this->render('articles/index.html.twig', [
             'controller_name' => 'ArticlesController',
             'articles' => $articles
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/article/nouveau",name="ajout_article")
+     */
+    public function ajoutArticle(HttpFoundationRequest $request){
+        $article = new Articles();
+        $form = $this->createForm(AjoutArticleFormType::class, $article);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $article->setUsers($this->getUser());
+            $doctrine = $this->getDoctrine()->getManager();
+            $doctrine->persist($article);
+            $doctrine->flush();
+
+            $this->addFlash('message', 'Votre articles a bien été publié.');
+            
+            return $this->redirectToRoute('articles');
+        }
+        return $this->render('articles/ajout.html.twig',[
+            'articleForm' => $form->createView()
         ]);
     }
 

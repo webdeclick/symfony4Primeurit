@@ -3,9 +3,15 @@
 namespace App\Form;
 
 use App\Entity\Articles;
+use App\Entity\Categories;
+use App\Entity\MotsCles;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AjoutArticleFormType extends AbstractType
 {
@@ -13,14 +19,23 @@ class AjoutArticleFormType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('slug')
-            ->add('contenu')
-            ->add('created_at')
-            ->add('updated_at')
-            ->add('featured_image')
-            ->add('users')
-            ->add('mots_cles')
-            ->add('categories')
+            ->add('contenu', CKEditorType::class)
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image mise en avant'
+            ])
+            ->add('mots_cles', EntityType::class, [
+                'class' => MotsCles::class,
+                'label' => 'Mosts-Clés',
+                'multiple' => true,
+                'expanded' => true
+            ])
+            ->add('categories', EntityType::class, [
+                'class' => Categories::class,
+                'label' => 'Catégoriess',
+                'multiple' => true,
+                'expanded' => true
+            ])
+            ->add('Publier', SubmitType::class)
         ;
     }
 
