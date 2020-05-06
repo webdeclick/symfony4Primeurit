@@ -80,4 +80,11 @@ class ArticlesController extends AbstractController
         ]);
 
     }
+
+     /**
+     * @Route("/article/modifier/{id}",name="modif_article")
+     */
+    public function modifArticle(){
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    }
 }
