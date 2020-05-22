@@ -74,6 +74,12 @@ class UsersAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
+        if($user->getActivationToken() != null){
+            //$this->addFlash('message', 'Vous avez bien activé votre compte');
+            //return new RedirectResponse($this->urlGenerator->generate('app_login')); 
+            throw new CustomUserMessageAuthenticationException('Votre compte à été créé sur notre site, veuillez activer votre compte.');
+        }
+
         return $user;
     }
 
@@ -95,8 +101,7 @@ class UsersAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
-        return new RedirectResponse($this->urlGenerator->generate('easyadmin'));
+        return new RedirectResponse($this->urlGenerator->generate('admin_index'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

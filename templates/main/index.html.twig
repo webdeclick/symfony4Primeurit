@@ -9,6 +9,11 @@
 </style>
 
 <div class="example-wrapper">
+    {% for message in app.flashes('message') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h1>Hello {{ controller_name }}! ✅</h1>
 
     This friendly message is coming from:
