@@ -75,8 +75,6 @@ class UsersAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         }
 
         if($user->getActivationToken() != null){
-            //$this->addFlash('message', 'Vous avez bien activé votre compte');
-            //return new RedirectResponse($this->urlGenerator->generate('app_login')); 
             throw new CustomUserMessageAuthenticationException('Votre compte à été créé sur notre site, veuillez activer votre compte.');
         }
 
